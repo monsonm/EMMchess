@@ -33,7 +33,7 @@ def main():
         p.display.flip()
 
 def drawGameState(screen, gameState):
-    drawBaord(screen)
+    drawBoard(screen)
     drawPieces(screen, gameState.board)
 
 def drawBoard(screen):
