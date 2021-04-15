@@ -12,9 +12,9 @@ maxFPS = 15
 images = {}
 
 def loadImages():
-    pieces = ['wP', 'wR', 'wN', 'wB', 'wQ', 'wK', 'bP', 'bR', 'bN', 'bB', 'bQ', 'bK',]
+    pieces = ['wP', 'wR', 'wN', 'wB', 'wQ', 'wK', 'bP', 'bR', 'bN', 'bB', 'bQ', 'bK']
     for piece in pieces:
-        images[piece] = p.transform .scale(p.image.load("Cburnett/" + piece + ".png"), (sqSize, sqSize))
+        images[piece] = p.transform .scale(p.image.load("EMMbastard/" + piece + ".png"), (sqSize, sqSize))
 
 def main():
     p.init()
@@ -24,10 +24,28 @@ def main():
     gameState = ChessEngine.GameState()
     loadImages()
     running = True
+    sqSelected = () #last click of the user (row, col)
+    playerClicks = [] #player clicks ex: [(1,2), (3,4)]
     while running:
         for e in p.event.get():
             if e.type == p.QUIT:
                 running = False
+            elif e.type == p.MOUSEBUTTONDOWN:
+                location = p.mouse.get_pos()
+                col = location[0]//sqSize
+                row = location[1]//sqSize
+                if sqSelected == (row, col): #clicked same square
+                    sqSelected = () #deselect
+                    playerClicks = [] #clear clicks
+                else:
+                    sqSelected = (row, col)
+                    playerClicks.append(sqSelected) #append both clicks
+                if len(playerClicks) == 2:
+                    move = ChessEngine.Move(playerClicks[0], playerClicks[1], gameState.board)
+                    print(move.getChessNotation())
+                    gameState.makeMove(move)
+                    sqSelected = () #reset square for next
+                    playerClicks = [] #reset clicks for next
         drawGameState(screen, gameState)
         clock.tick(maxFPS)
         p.display.flip()
@@ -37,7 +55,7 @@ def drawGameState(screen, gameState):
     drawPieces(screen, gameState.board)
 
 def drawBoard(screen):
-    colors = [p.Color("white"), p.Color("gray")]
+    colors = [p.Color("white"), p.Color("dark green")]
     for r in range(dimension):
         for c in range(dimension):
             color = colors[((r+c) % 2)]
