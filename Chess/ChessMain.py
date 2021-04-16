@@ -6,7 +6,7 @@ import pygame as p
 from Chess import ChessEngine
 
 width = height = 512
-dimension = 8
+dimension: int = 8
 sqSize = height // dimension
 maxFPS = 15
 images = {}
@@ -14,14 +14,16 @@ images = {}
 def loadImages():
     pieces = ['wP', 'wR', 'wN', 'wB', 'wQ', 'wK', 'bP', 'bR', 'bN', 'bB', 'bQ', 'bK']
     for piece in pieces:
-        images[piece] = p.transform .scale(p.image.load("EMMbastard/" + piece + ".png"), (sqSize, sqSize))
-
+        images[piece] = p.transform.scale(p.image.load("EMMbastard/" + piece + ".png"), (sqSize, sqSize))
 def main():
     p.init()
     screen = p.display.set_mode((width, height))
     clock = p.time.Clock()
     screen.fill(p.Color("white"))
     gameState = ChessEngine.GameState()
+    validMoves = gameState.getValidMoves()
+    moveMade = False #flag varriable for when a move is made
+
     loadImages()
     running = True
     sqSelected = () #last click of the user (row, col)
@@ -30,6 +32,7 @@ def main():
         for e in p.event.get():
             if e.type == p.QUIT:
                 running = False
+            # Mouse Handler
             elif e.type == p.MOUSEBUTTONDOWN:
                 location = p.mouse.get_pos()
                 col = location[0]//sqSize
@@ -43,9 +46,21 @@ def main():
                 if len(playerClicks) == 2:
                     move = ChessEngine.Move(playerClicks[0], playerClicks[1], gameState.board)
                     print(move.getChessNotation())
-                    gameState.makeMove(move)
-                    sqSelected = () #reset square for next
-                    playerClicks = [] #reset clicks for next
+                    if move in validMoves:
+                        gameState.makeMove(move)
+                        moveMade = True
+                    sqSelected = ()  #reset square for next
+                    playerClicks = []  #reset clicks for next
+            # key handlers
+            elif e.type == p.KEYDOWN:
+                if e.key == p.K_z:  # undo when keyboard 'z' is pressed
+                    gameState.undoMove()
+                    moveMade = True
+
+        if moveMade:
+            validMoves = gameState.getValidMoves()
+            moveMade = False
+
         drawGameState(screen, gameState)
         clock.tick(maxFPS)
         p.display.flip()
@@ -55,7 +70,7 @@ def drawGameState(screen, gameState):
     drawPieces(screen, gameState.board)
 
 def drawBoard(screen):
-    colors = [p.Color("white"), p.Color("dark green")]
+    colors = [p.Color("gray"), p.Color("dark green")]
     for r in range(dimension):
         for c in range(dimension):
             color = colors[((r+c) % 2)]
