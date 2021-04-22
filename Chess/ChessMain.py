@@ -45,13 +45,14 @@ def main():
                     playerClicks.append(sqSelected) #append both clicks
                 if len(playerClicks) == 2:
                     move = ChessEngine.Move(playerClicks[0], playerClicks[1], gameState.board)
-                    print(move.getChessNotation())
-                    if move in validMoves:
-                        gameState.makeMove(move)
-                        moveMade = True
-                        sqSelected = ()  #reset square for next
-                        playerClicks = []  #reset clicks for next
-                    else:
+                    for i in range(len(validMoves)):
+                        if move == validMoves[i]:
+                            gameState.makeMove(validMoves[i])
+                            moveMade = True
+                            print(move.getChessNotation())
+                            sqSelected = ()  #reset square for next
+                            playerClicks = []  #reset clicks for next
+                    if not moveMade:
                         playerClicks = [sqSelected]
             # key handlers
             elif e.type == p.KEYDOWN:
