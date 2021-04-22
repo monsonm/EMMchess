@@ -49,8 +49,10 @@ def main():
                     if move in validMoves:
                         gameState.makeMove(move)
                         moveMade = True
-                    sqSelected = ()  #reset square for next
-                    playerClicks = []  #reset clicks for next
+                        sqSelected = ()  #reset square for next
+                        playerClicks = []  #reset clicks for next
+                    else:
+                        playerClicks = [sqSelected]
             # key handlers
             elif e.type == p.KEYDOWN:
                 if e.key == p.K_z:  # undo when keyboard 'z' is pressed
