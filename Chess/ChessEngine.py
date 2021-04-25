@@ -63,7 +63,7 @@ class GameState():
                 self.board[move.endRow][move.endCol - 1] = self.board[move.endRow][move.endCol + 1]  # moves the rook
                 self.board[move.endRow][move.endCol + 1] = '--'
             else:  # Queen side castle move
-                self.board[move.endROw][move.endCol + 1] = self.board[move.endRow][move.endCol - 2]  # moves the rook
+                self.board[move.endRow][move.endCol + 1] = self.board[move.endRow][move.endCol - 2]  # moves the rook
                 self.board[move.endRow][move.endCol - 2] = '--'  # erase old rook
 
         # update castling rights --> whenever it is a rook or a king move
