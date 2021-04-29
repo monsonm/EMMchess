@@ -8,7 +8,7 @@ from Chess import ChessEngine
 width = height = 512
 dimension: int = 8
 sqSize = height // dimension
-maxFPS = 15
+maxFPS = 30
 images = {}
 
 def loadImages():

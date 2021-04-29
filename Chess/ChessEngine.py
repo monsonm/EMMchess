@@ -2,6 +2,8 @@
 This class will store all information regarding the current game state and for determining valid chess moves
 at the current game state. It will also keep a log of all moves.
 """
+from Chess import ChessMain
+from abc import ABC, abstractmethod
 
 class GameState():
     def __init__(self):
@@ -234,7 +236,6 @@ class GameState():
                     moves.append(Move((r, c), (r + 1, c + 1), self.board))
                 elif (r+1,c+1) == self.enPassantPossible:
                     moves.append(Move((r, c), (r + 1, c + 1), self.board, isEnPassantMove=True))
-        # ADD PAWN PROMOTION LATER
     '''
     Get All Rook Moves For The Rook Located At Row, Col And Then Adds To Move List
     '''
@@ -392,3 +393,80 @@ class Move():
 
 
 
+class Board():
+    rows = cols = ChessMain.dimension
+    Squares = []
+    for i in range(rows):
+        col = []
+        for j in range(cols):
+            pass
+            # col.append()
+        Squares.append(col)
+
+    def __init__(self):
+        pass
+
+
+class Square():
+    def __init__(self, piece):
+        self.piece = piece
+
+    def changePiece(self, piece):
+        self.piece = piece
+
+    def getAllPossibleMoves(self):
+        return self.piece.getAllPossibleMoves()
+
+class Piece():
+    def __init__(self):
+        pass
+
+    @abstractmethod
+    def getAllPossibleMoves(self):
+        pass
+
+class EmptyPiece(Piece):
+
+    def getAllPossibleMoves(self):
+        pass
+
+
+class PawnPiece(Piece):
+
+    def getAllPossibleMoves(self):
+        pass
+
+
+class RookPiece(Piece):
+
+    def getAllPossibleMoves(self):
+        pass
+
+
+class KingPiece(Piece):
+
+    def getAllPossibleMoves(self):
+        pass
+
+
+class QueenPiece(Piece):
+
+    def getAllPossibleMoves(self):
+        pass
+
+
+class BishopPiece(Piece):
+
+    def getAllPossibleMoves(self):
+        pass
+
+
+class KnightPiece(Piece):
+
+    def getAllPossibleMoves(self):
+        pass
+
+class Move2():
+    def __init__(self, startSquare, endSquare):
+        self.startSquare
+        self.endSquare
