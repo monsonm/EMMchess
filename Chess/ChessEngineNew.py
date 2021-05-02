@@ -151,6 +151,7 @@ class EnPassantMove(Move):
     def __init__(self, startSq, endSq):
         super().__init__(startSq, endSq)
         self.pieceCaptured = PawnPiece('w') if str(self.pieceMoved) == 'bP' else PawnPiece('b')
+        self.capturedPawnSq = startSq.board[startSq.row][endSq.col]
 
 '''
 
@@ -165,8 +166,8 @@ class MoveHandler():
         self.board = Board().board
         self.whiteToMove = True
         self.moveLog = []
-        self.whiteKingLocation = (7, 4)
-        self.blackKingLocation = (0, 4)
+        self.whiteKingLocation = self.board[7][4]
+        self.blackKingLocation = self.board[0][4]
         self.checkMate = False
         self.staleMate = False
         self.enPassantPossible = ()  # square where an en passant is currently possible
@@ -175,6 +176,42 @@ class MoveHandler():
         #    CastleRights(self.currentCastlingRights.whiteKingSide, self.currentCastlingRights.blackKingSide,
         #                 self.currentCastlingRights.whiteQueenSide, self.currentCastlingRights.blackQueenSide)]
 
+    def makeMove(self, move):
+        move.startSq.piece = EmptyPiece()
+        move.endSq.piece = move.pieceMoved()
+        self.moveLog.append(move)
+        self.whiteToMove = not self.whiteToMove
+
+        #  update king's position if needed
+        if str(move.pieceMoved) == 'wK':
+            self.whiteKingLocation = move.endSq
+        elif str(move.pieceMoved) == 'bK':
+            self.blackKingLocation = move.endSq
+
+        #  pawn promotion
+        if move.isPawnPromotion:
+            move.endSq.piece = QueenPiece(move.pieceMoved.color)
+
+        #  en passant
+        if isinstance(move, EnPassantMove):
+            move.capturedPawnSq = EmptyPiece()
+
+        # castle Move
+        # if isinstance(move, CastleMove):
+        #     if move.endCol - move.startCol == 2:  # king side castle move
+        #         self.board[move.endRow][move.endCol - 1] = self.board[move.endRow][
+        #             move.endCol + 1]  # moves the rook
+        #         self.board[move.endRow][move.endCol + 1] = '--'
+        #     else:  # Queen side castle move
+        #         self.board[move.endRow][move.endCol + 1] = self.board[move.endRow][
+        #             move.endCol - 2]  # moves the rook
+        #         self.board[move.endRow][move.endCol - 2] = '--'  # erase old rook
+
+        # update castling rights --> whenever it is a rook or a king move
+        # self.updateCastleRights(move)
+        # self.castleRightsLog.append(
+        #     CastleRights(self.currentCastlingRights.whiteKingSide, self.currentCastlingRights.blackKingSide,
+        #                  self.currentCastlingRights.whiteQueenSide, self.currentCastlingRights.blackQueenSide))
 
     def getAllPossibleMoves(self):
         moves = []
@@ -184,3 +221,9 @@ class MoveHandler():
                 if (color == 'w' and self.whiteToMove) or (color == 'b' and not self.whiteToMove):
                     moves.extend(self.board[r][c].getAllPossibleMoves())
         return moves
+
+    def updateEnPassantPossible(self, move):
+        if move.pieceMoved[1] == 'P' and abs(move.startRow - move.endRow) == 2:  # pawn moved 2 squares
+            self.enPassantPossible = ((move.startRow + move.endRow) // 2, move.endCol)
+        else:
+            self.enPassantPossible = ()
