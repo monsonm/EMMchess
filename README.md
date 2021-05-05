@@ -11,10 +11,10 @@ The ChessEngine file is responsible for storing all information regarding the cu
 A log of all moves is also kept within the ChessEngine file.
 The ChessMain is the main driver class and will handle user input and display of the current game state. 
 The two python files work in tandem to run and display a chess board with all pieces.
-Some other available user features include the ability to undo moves and to see each pieces available moves highlighted at each user's turn.
+Some other available user features include the ability to undo moves and to see each piece's available moves highlighted at each user's turn.
 
 This chess game includes all of the necessary functionality for a chess game. 
-Each piece moves the correct way. pieces can be properly cpatured, and end-game scenarios such as checkmate and stalemate.
+Each piece moves the correct way, pieces can be properly cpatured, and end-game scenarios such as checkmate and stalemate.
 Special moves are also implemented like castling to either the king or queen side, en passant captures, and pawn promotion.
 However, the game does not include some high level rules and game-specific functionalities such as not being able to select any piece when a pawn is promoted.
 A Queen piece is automatically selected in this scenario.
