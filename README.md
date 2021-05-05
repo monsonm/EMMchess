@@ -13,7 +13,7 @@ The ChessMain is the main driver class and will handle user input and display of
 The two python files work in tandem to run and display a chess board with all pieces.
 Some other available user features include the ability to undo moves and see each pieces available moves.
 
-The game does not include some high level rules and game-specific such as not being able to select any piece when a pawn is promoted.
+The game does not include some high level rules and game-specific functionalities such as not being able to select any piece when a pawn is promoted.
 A Queen piece is automatically selected in this scenario.
 Another functionality that is missing from this project is the 50 move rule which states that a player can claim a draw if no capture has been made
 and no pawn has been moved in the last fifty moves.
