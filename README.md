@@ -17,6 +17,6 @@ This chess game includes all of the necessary functionality for a chess game.
 Each piece moves the correct way, pieces can be properly cpatured, and end-game scenarios such as checkmate and stalemate.
 Special moves are also implemented like castling to either the king or queen side, en passant captures, and pawn promotion.
 However, the game does not include some high level rules and game-specific functionalities such as not being able to select any piece when a pawn is promoted.
-A Queen piece is automatically selected in this scenario.
-Another functionality that is missing from this project is the 50 move rule which states that a player can claim a draw if no capture has been made
+A queen piece is automatically selected in this scenario.
+Another functionality that is missing from this game is the 50 move rule which states that a player can claim a draw if no capture has been made
 and no pawn has been moved in the last fifty moves.
